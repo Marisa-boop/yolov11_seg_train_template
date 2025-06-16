@@ -12,8 +12,8 @@ def merge_datasets(source_dirs, target_dir):
     target_dir: 目标目录路径
     """
     # 创建目标目录结构
-    target_images = os.path.join(target_dir, 'images')
-    target_masks = os.path.join(target_dir, 'masks')
+    target_images = os.path.join(target_dir, "images")
+    target_masks = os.path.join(target_dir, "masks")
 
     os.makedirs(target_images, exist_ok=True)
     os.makedirs(target_masks, exist_ok=True)
@@ -26,8 +26,8 @@ def merge_datasets(source_dirs, target_dir):
     # 遍历每个源目录
     for source_dir in source_dirs:
         # 获取图像和蒙版图目录路径
-        images_path = os.path.join(source_dir, 'images')
-        masks_path = os.path.join(source_dir, 'masks')
+        images_path = os.path.join(source_dir, "images")
+        masks_path = os.path.join(source_dir, "masks")
 
         # 检查源目录是否存在
         if not os.path.exists(images_path) or not os.path.exists(masks_path):
@@ -36,16 +36,17 @@ def merge_datasets(source_dirs, target_dir):
             continue
 
         # 获取图像文件列表
-        images_files = [f for f in os.listdir(
-            images_path) if f.endswith(('.jpg', '.jpeg', '.png'))]
+        images_files = [
+            f for f in os.listdir(images_path) if f.endswith((".jpg", ".jpeg", ".png"))
+        ]
 
         if not images_files:
             print(f"警告: {os.path.basename(source_dir)} 的图像目录为空")
             continue
 
         # 处理进度条
-        progress_bar = tqdm(images_files, desc=f"处理目录 {
-                            os.path.basename(source_dir)}")
+        desc = f"处理目录 {os.path.basename(source_dir)}"
+        progress_bar = tqdm(images_files, desc=desc)
 
         # 处理每个文件
         for img_file in progress_bar:
@@ -67,7 +68,7 @@ def merge_datasets(source_dirs, target_dir):
                 shutil.copy2(src_img, dest_img)
 
             # 查找对应的蒙版文件
-            mask_file = img_base + '.png'  # 蒙版文件为同名.png
+            mask_file = img_base + ".png"  # 蒙版文件为同名.png
             src_mask = os.path.join(masks_path, mask_file)
 
             if os.path.exists(src_mask):
@@ -77,7 +78,7 @@ def merge_datasets(source_dirs, target_dir):
                 file_count += 1  # 计入有效配对
             else:
                 # 检查是否存在其他扩展名的蒙版文件
-                possible_extensions = ['.png', '.jpg', '.jpeg']
+                possible_extensions = [".png", ".jpg", ".jpeg"]
                 found = False
 
                 for ext in possible_extensions:
@@ -98,7 +99,9 @@ def merge_datasets(source_dirs, target_dir):
                 if not found:
                     missing_mask_count += 1
                     if missing_mask_count < 5:  # 只显示前几个警告
-                        print(f"警告: 找不到蒙版文件 {mask_file} (或替代) 对应图像 {img_file}")
+                        print(
+                            f"警告: 找不到蒙版文件 {mask_file} (或替代) 对应图像 {img_file}"
+                        )
 
         print(f"已处理 {len(images_files)} 个图像文件")
 
@@ -134,7 +137,7 @@ if __name__ == "__main__":
     print(f"找到 {len(source_directories)} 个潜在源目录:")
     for i, path in enumerate(source_directories, 1):
         print(f"{i}. {os.path.basename(path)}")
-    print("="*50)
+    print("=" * 50)
 
     # 执行合并
     merge_datasets(source_directories, target_directory)
