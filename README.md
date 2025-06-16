@@ -10,6 +10,7 @@ datasets_origin
 ...
 ```
 
-2. python ./utils/merge_data.py
-3. python ./utils/masks2yoloForm.py
-4. python ./utils/train.py
+2. `python ./utils/merge_data.py`
+3. `python ./utils/masks2yoloForm.py`
+4. `python ./utils/spilit_data.py`
+4. `python ./utils/train.py`
