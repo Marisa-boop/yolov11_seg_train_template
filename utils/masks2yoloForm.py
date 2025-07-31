@@ -43,6 +43,10 @@ if __name__ == "__main__":
     labels_dir = "./merged_data/labels"
     template_dir = "./template_image"  # 包含所有类别的模板图片目录
 
+    # 确保所有输出目录存在
+    Path(normalized_dir).mkdir(parents=True, exist_ok=True)
+    Path(labels_dir).mkdir(parents=True, exist_ok=True)  # 关键修复：确保标签目录存在
+
     # 步骤1：通过模板生成全局映射表
     class_mapping = generate_class_mapping(template_dir)
     print(f"生成全局映射表: {class_mapping}")
